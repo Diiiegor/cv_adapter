@@ -1,0 +1,9 @@
+{
+    "dependencies": [
+        "."
+    ],
+    "graphs": {
+        "my_agent": "./app/agents/cv_reader.py:cv_reader_agent"
+    },
+    "env": "./.env"
+}
