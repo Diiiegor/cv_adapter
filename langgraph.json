@@ -3,7 +3,8 @@
         "."
     ],
     "graphs": {
-        "my_agent": "./app/agents/cv_reader.py:cv_reader_agent"
+        "cv_reader": "./app/agents/cv_reader.py:cv_reader_agent",
+        "cv_validator":"./app/agents/cv_validator.py:cv_validator"
     },
     "env": "./.env"
 }

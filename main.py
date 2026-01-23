@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from app.routers import cv_router, adaptation_router
+from app.routers import cv_router
 from app.models.config import settings
-
+from dotenv import load_dotenv
+load_dotenv()
 
 app = FastAPI(
     title="CV Adapter API",
@@ -20,7 +20,6 @@ app.add_middleware(
 )
 
 app.include_router(cv_router.router)
-app.include_router(adaptation_router.router)
 
 
 @app.get("/")

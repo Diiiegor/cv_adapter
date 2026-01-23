@@ -25,16 +25,6 @@ class FileService:
 
         return str(file_path)
 
-    def extract_text_from_pdf(self, file_path: str) -> str:
-        try:
-            with open(file_path, "rb") as file:
-                reader = PdfReader(file)
-                text = ""
-                for page in reader.pages:
-                    text += page.extract_text()
-                return text
-        except Exception as e:
-            raise ValueError(f"Error reading PDF: {str(e)}")
 
     def get_file_path(self, filename: str) -> Optional[str]:
         file_path = self.upload_dir / filename

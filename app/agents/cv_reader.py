@@ -1,7 +1,6 @@
 from langchain.agents import create_agent
 from langchain.messages import SystemMessage
 from app.agents.outputs.cv_reader_output import CVReaderOutput
-from dotenv import load_dotenv
 
 
 base_prompt = SystemMessage("""Role: Expert CV Data Extractor.
