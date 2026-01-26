@@ -24,6 +24,11 @@ class Settings:
     # Configuración de CORS
     ALLOWED_ORIGINS: list = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 
+    # Configuración de Redis
+    REDIS_HOST: str = os.getenv("REDIS_HOST", "localhost")
+    REDIS_PORT: int = int(os.getenv("REDIS_PORT", "6379"))
+    REDIS_DB: int = int(os.getenv("REDIS_DB", "0"))
+
     def validate_openai_config(self) -> bool:
         """Valida que la configuración de OpenAI sea correcta"""
         if not self.OPENAI_API_KEY:
