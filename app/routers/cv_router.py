@@ -1,6 +1,7 @@
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile, File, Form
 from fastapi import status
-from app.http.responses import error_response,success_response
+from typing import Optional
+from app.http.responses import error_response, success_response
 from app.services.cv_validation_service import get_cv_validation_service, CVValidationService
 from fastapi import Depends
 
@@ -8,7 +9,11 @@ router = APIRouter(prefix="/cv", tags=["CV"])
 
 
 @router.post("/validate")
-async def validate_cv(file: UploadFile = File(...), cv_validation_service: CVValidationService = Depends(get_cv_validation_service)):
+async def validate_cv(
+    file: UploadFile = File(...),
+    job_description: Optional[str] = Form(None),
+    cv_validation_service: CVValidationService = Depends(get_cv_validation_service),
+):
     response = None
     try:
         # Just PDF Files allowed

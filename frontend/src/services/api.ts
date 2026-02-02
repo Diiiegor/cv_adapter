@@ -9,9 +9,15 @@ export interface ValidateCVResponse {
   }
 }
 
-export const validateCV = async (file: File): Promise<ValidateCVResponse> => {
+export const validateCV = async (
+  file: File,
+  jobDescription?: string
+): Promise<ValidateCVResponse> => {
   const formData = new FormData()
   formData.append('file', file)
+  if (jobDescription) {
+    formData.append('job_description', jobDescription)
+  }
 
   const response = await fetch(`${API_BASE_URL}/cv/validate`, {
     method: 'POST',
