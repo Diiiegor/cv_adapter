@@ -1,7 +1,9 @@
+import base64
 from fastapi import APIRouter, UploadFile, File, Form
 from fastapi import status
 from typing import Optional
 from app.http.responses import error_response, success_response
+from app.models.schemas import AdaptCVRequestBody
 from app.services.cv_validation_service import get_cv_validation_service, CVValidationService
 from fastapi import Depends
 
@@ -36,3 +38,32 @@ async def validate_cv(
             status.HTTP_400_BAD_REQUEST, message=str(e), exception=e
         )
     return response
+
+@router.post("/adapt")
+async def adapt_cv(
+    body: AdaptCVRequestBody,
+    cv_validation_service: CVValidationService = Depends(get_cv_validation_service),
+):
+    try:
+        try:
+            file_content = base64.b64decode(body.file, validate=True)
+        except Exception:
+            raise Exception("Invalid base64 encoding for file")
+
+        max_cv_size = 10 * 1024 * 1024  # 10MB
+        if len(file_content) > max_cv_size:
+            raise Exception("File is too large to be a CV (max 10MB)")
+
+        if not file_content.startswith(b"%PDF"):
+            raise Exception("Only PDF files are allowed")
+
+        is_cv = await cv_validation_service.validate_cv(file_content)
+        if not is_cv:
+            raise Exception("File is not a CV")
+
+        # TODO: call adaptation service and return adapted CV / download_url
+        return success_response(data={"message": "CV adaptado correctamente"})
+    except Exception as e:
+        return error_response(
+            status.HTTP_400_BAD_REQUEST, message=str(e), exception=e
+        )

@@ -1,4 +1,4 @@
-import CVValidator from '../components/CVValidator'
+import CVAdapter from '../components/CVAdapter'
 import StatsCharts from '../components/StatsCharts'
 
 const Home = () => {
@@ -55,6 +55,23 @@ const Home = () => {
             ✓ Más entrevistas, menos silencio
           </span>
         </div>
+      </section>
+
+      {/* CTA + Tool */}
+      <section className="relative container mx-auto px-4 py-14 md:py-20">
+        <div className="text-center mb-12">
+          <p className="font-display text-sm font-semibold uppercase tracking-[0.2em] mb-3 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 bg-clip-text text-transparent">
+            Empieza ya
+          </p>
+          <h2 className="font-display text-3xl md:text-4xl font-bold mb-3">
+            <span className="text-zinc-50">Adapta </span>
+            <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 bg-clip-text text-transparent">tu CV</span>
+          </h2>
+          <p className="text-zinc-400 max-w-xl mx-auto">
+            Sube tu CV y la descripción del puesto. Adaptamos tu perfil a la oferta para que pases filtros ATS e IA.
+          </p>
+        </div>
+        <CVAdapter />
       </section>
 
       {/* Value sections — asymmetric accent */}
@@ -117,22 +134,7 @@ const Home = () => {
       {/* Stats / Charts */}
       <StatsCharts />
 
-      {/* CTA + Tool */}
-      <section className="relative container mx-auto px-4 py-14 md:py-20">
-        <div className="text-center mb-12">
-          <p className="font-display text-sm font-semibold uppercase tracking-[0.2em] mb-3 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 bg-clip-text text-transparent">
-            Empieza ya
-          </p>
-          <h2 className="font-display text-3xl md:text-4xl font-bold mb-3">
-            <span className="text-zinc-50">Valida y adapta </span>
-            <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 bg-clip-text text-transparent">tu CV</span>
-          </h2>
-          <p className="text-zinc-400 max-w-xl mx-auto">
-            Sube tu CV y la descripción del puesto. Comprueba que tu perfil encaja y evita quedar fuera por filtros automáticos.
-          </p>
-        </div>
-        <CVValidator />
-      </section>
+      
 
       {/* Footer */}
       <footer className="relative mt-auto">

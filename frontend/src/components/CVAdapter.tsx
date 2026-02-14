@@ -1,13 +1,13 @@
 import { useState, useRef } from 'react'
-import { validateCV, type ValidateCVResponse } from '../services/api'
+import { adaptCV, type AdaptCVResponse } from '../services/api'
 import CVUpload from './CVUpload'
 import JobDescription from './JobDescription'
 
-const CVValidator = () => {
+const CVAdapter = () => {
   const [file, setFile] = useState<File | null>(null)
   const [jobDescription, setJobDescription] = useState('')
   const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState<ValidateCVResponse | null>(null)
+  const [result, setResult] = useState<AdaptCVResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -24,10 +24,10 @@ const CVValidator = () => {
     setResult(null)
 
     try {
-      const response = await validateCV(file, jobDescription.trim() || undefined)
+      const response = await adaptCV(file, jobDescription.trim() || undefined)
       setResult(response)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al validar el CV')
+      setError(err instanceof Error ? err.message : 'Error al adaptar el CV')
     } finally {
       setLoading(false)
     }
@@ -75,26 +75,26 @@ const CVValidator = () => {
             </div>
           </div>
 
-          {result && (
-            <div
-              className={`border rounded-xl p-4 ${
-                result.data?.is_cv
-                  ? 'bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-emerald-500/10 border-emerald-500/40'
-                  : 'bg-amber-500/10 border-amber-500/40'
-              }`}
-            >
+          {result?.success && (
+            <div className="border rounded-xl p-4 bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-emerald-500/10 border-emerald-500/40">
               <p className="font-medium text-lg mb-2">
-                {result.data?.is_cv ? (
-                  <span className="text-emerald-400">
-                    ✓ El archivo es un CV válido
-                  </span>
-                ) : (
-                  <span className="text-amber-400">
-                    ⚠ El archivo no parece ser un CV válido
-                  </span>
-                )}
+                <span className="text-emerald-400">
+                  ✓ CV adaptado a la oferta
+                </span>
               </p>
-              <p className="text-sm text-zinc-400">{result.detail}</p>
+              <p className="text-sm text-zinc-400 mb-3">{result.detail}</p>
+              {result.data?.download_url && (
+                <a
+                  href={result.data.download_url}
+                  download
+                  className="inline-flex items-center gap-2 font-medium text-emerald-400 hover:text-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-zinc-900 rounded-lg transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Descargar CV adaptado
+                </a>
+              )}
             </div>
           )}
 
@@ -126,10 +126,10 @@ const CVValidator = () => {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     />
                   </svg>
-                  Validando...
+                  Adaptando...
                 </span>
               ) : (
-                'Validar CV'
+                'Adaptar CV'
               )}
             </button>
             {(file || jobDescription || result) && (
@@ -150,4 +150,4 @@ const CVValidator = () => {
   )
 }
 
-export default CVValidator
+export default CVAdapter
