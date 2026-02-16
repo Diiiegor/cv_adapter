@@ -1,35 +1,35 @@
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class PersonalInfo(BaseModel):
-    full_name: Optional[str] = None
-    email: Optional[str] = None
-    phone_number: Optional[str] = None
-    role_name: Optional[str] = None
-    professional_summary: Optional[str] = None
+    full_name: str =Field(description="The full name of the person")
+    email: str =Field(description="The email of the person")
+    phone_number: str =Field(description="The phone number of the person")
+    role_name: str =Field(description="The role of the job offer")
+    professional_summary: str =Field(description="The professional summary of the person")
 
 
 class Education(BaseModel):
-    institution: Optional[str] = None
-    location: Optional[str] = None
-    degree: Optional[str] = None
-    start_date: Optional[str] = None
-    end_date: Optional[str] = None
-    details: Optional[List[str]] = None  # bullet points / highlights
+    institution: str =Field(description="The institution of the person")
+    location: str =Field(description="The location of the institution, if the location is not available, return the country of the institution")
+    degree: str =Field(description="The degree of the person")
+    start_date: str =Field(description="The start date of the education")
+    end_date: str =Field(description="The end date of the education")
+    details: List[str] =Field(description="The details of the education")
 
 
 class Experience(BaseModel):
-    organization: Optional[str] = None
-    position: Optional[str] = None
-    start_date: Optional[str] = None
-    end_date: Optional[str] = None
-    details: Optional[List[str]] = None
+    organization: str =Field(description="The organization of the person's experience")
+    position: str =Field(description="The position of the person's experience")
+    start_date: str =Field(description="The start date of the experience")
+    end_date: str =Field(description="The end date of the experience")
+    details: List[str] =Field(description="The details of the experience")
 
 
 class CVReaderOutput(BaseModel):
-    personal_info: Optional[PersonalInfo] = None
-    skills: Optional[List[str]] = None  # e.g. ["Python", "FastAPI", "React", ...]
-    experience: Optional[List[Experience]] = None
-    education: Optional[List[Education]] = None
-    languages: Optional[List[str]] = None  # e.g. ["Spanish", "English"]
+    personal_info: PersonalInfo =Field(description="The personal information of the person")
+    skills: List[str] =Field(description="The skills of the person")
+    experience: List[Experience] =Field(description="The experiences of the person")
+    education: List[Education] =Field(description="The education of the person")
+    languages: List[str] =Field(description="The languages of the person")

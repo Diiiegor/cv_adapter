@@ -4,7 +4,8 @@
     ],
     "graphs": {
         "cv_reader": "./app/agents/cv_reader.py:cv_reader_agent",
-        "cv_validator":"./app/agents/cv_validator.py:cv_validator"
+        "cv_validator":"./app/agents/cv_validator.py:cv_validator",
+        "cv_adapter_agent":"./app/agents/cv_adapter_agent.py:cv_adapter_agent"
     },
     "env": "./.env"
 }
