@@ -6,6 +6,7 @@ from app.http.responses import error_response, success_response
 from app.models.schemas import AdaptCVRequestBody
 from app.services.cv_validation_service import get_cv_validation_service, CVValidationService
 from fastapi import Depends
+from app.services.cv_adaptation_service import get_cv_adaptation_service, CVAdaptationService
 
 router = APIRouter(prefix="/cv", tags=["CV"])
 
@@ -43,6 +44,7 @@ async def validate_cv(
 async def adapt_cv(
     body: AdaptCVRequestBody,
     cv_validation_service: CVValidationService = Depends(get_cv_validation_service),
+    cv_adaptation_service: CVAdaptationService = Depends(get_cv_adaptation_service),
 ):
     try:
         try:
@@ -61,8 +63,8 @@ async def adapt_cv(
         if not is_cv:
             raise Exception("File is not a CV")
 
-        # TODO: call adaptation service and return adapted CV / download_url
-        return success_response(data={"message": "CV adaptado correctamente"})
+        adapted_cv = await cv_adaptation_service.adapt_cv_to_job_offer(file_content, body.job_description)
+        return success_response(data={"message": "CV adaptado correctamente", "adapted_cv": adapted_cv})
     except Exception as e:
         return error_response(
             status.HTTP_400_BAD_REQUEST, message=str(e), exception=e
