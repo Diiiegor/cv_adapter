@@ -40,25 +40,12 @@ def extract_data_from_pdf(file_path: str) -> CVReaderOutput:
 
 def cv_adapter_agent():
 
-    job_description = """Profesional en Ingeniería de Sistemas, Ingeniería de Software o áreas afines.
-Experiencia de 3 a 4 años trabajando con Ruby on Rails, desarrollando y manteniendo aplicaciones en entornos de producción.
-Conocimientos sólidos en bases de datos SQL, bases de datos relacionales y no relacionales, así como en diseño, modelado y optimización de consultas.
-Dominio del ecosistema Ruby y Ruby on Rails, aplicando buenas prácticas de arquitectura, patrones de diseño y estándares de calidad.
-Experiencia con herramientas y frameworks de pruebas automatizadas, especialmente RSpec y Minitest.
-Experiencia en manipulación, procesamiento y transformación de datos, integrando distintas fuentes de información.
-Familiaridad con herramientas de contenedorización como Docker, tanto para entornos locales como para despliegues.
-Conocimientos y experiencia en integración y despliegue continuo, preferiblemente con Jenkins.
-Experiencia en servicios en la nube, especialmente en AWS (EC2, S3, RDS u otros servicios relevantes).
-Conocimientos en uso de APIs REST, control de versiones con Git y trabajo colaborativo en entornos ágiles.
-"""
+
     prompt = ChatPromptTemplate.from_template("""ROLE
 You are an expert Senior Technical Recruiter and Executive Resume Writer with 20+ years of experience in Fortune 500 companies. Your specialty is "Profile Transformation"—you know exactly how to translate a candidate’s experience from one tech stack to another (e.g., from PHP to Ruby) to ensure they look like a perfect 1:1 match for the role.
 
 MISSION
 Rewrite the provided "Current Resume" to perfectly align with the "Job Description." You are authorized to pivot and substitute technologies from the original resume with those required in the job description, provided they are functionally equivalent or transferable, to ensure the candidate scores in the top 1% of applicants.
-
-JOB DESCRIPTION:
-<job_description>{job_description}</job_description>
 
 
 CRITICAL GUIDELINES & CONSTRAINTS
@@ -93,7 +80,7 @@ Create a dedicated "Technical Skills" section that mirrors the JD’s terminolog
 
 
 
-    base_prompt = SystemMessage(prompt.format(job_description=job_description))
+    base_prompt = SystemMessage(prompt.format())
     cv_adapter_agent = create_agent(
         model=ChatOpenAI(model="gpt-5-nano", temperature=1), system_prompt=base_prompt, response_format=CVReaderOutput,
     )
