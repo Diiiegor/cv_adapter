@@ -28,10 +28,12 @@ const JobDescription = ({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         disabled={disabled}
-        className="block w-full rounded-lg border border-zinc-600 bg-zinc-800/50 px-4 py-3 text-zinc-100 placeholder-zinc-500 focus:border-emerald-500 focus:ring-emerald-500 focus:outline-none disabled:bg-zinc-800 disabled:cursor-not-allowed h-[300px] resize-none"
+        aria-invalid={!!error}
+        aria-describedby={error ? 'job-description-error' : undefined}
+        className="block w-full rounded-xl border border-zinc-600 bg-zinc-800/50 px-4 py-3 text-zinc-100 placeholder-zinc-500 transition-colors duration-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30 focus:outline-none hover:border-zinc-500 disabled:bg-zinc-800/80 disabled:border-zinc-700 disabled:cursor-not-allowed disabled:opacity-80 h-[300px] min-h-[120px] resize-y"
       />
       {error && (
-        <p className="text-sm text-red-400" role="alert">
+        <p id="job-description-error" className="text-sm text-red-400 font-medium" role="alert">
           {error}
         </p>
       )}

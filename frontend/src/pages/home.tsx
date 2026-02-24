@@ -4,6 +4,10 @@ import StatsCharts from '../components/StatsCharts'
 const Home = () => {
   return (
     <div className="min-h-screen relative overflow-hidden">
+      {/* Skip to main content for keyboard users */}
+      <a href="#main-content" className="skip-link">
+        Saltar al contenido principal
+      </a>
       {/* Subtle grid + glow background */}
       <div className="fixed inset-0 bg-grid-pattern bg-grid pointer-events-none opacity-60" aria-hidden />
       <div className="fixed inset-0 bg-hero-glow pointer-events-none" aria-hidden />
@@ -58,12 +62,12 @@ const Home = () => {
       </section>
 
       {/* CTA + Tool */}
-      <section className="relative container mx-auto px-4 py-14 md:py-20">
+      <section id="main-content" className="relative container mx-auto px-4 py-14 md:py-20" aria-labelledby="tool-heading">
         <div className="text-center mb-12">
           <p className="font-display text-sm font-semibold uppercase tracking-[0.2em] mb-3 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 bg-clip-text text-transparent">
             Empieza ya
           </p>
-          <h2 className="font-display text-3xl md:text-4xl font-bold mb-3">
+          <h2 id="tool-heading" className="font-display text-3xl md:text-4xl font-bold mb-3">
             <span className="text-zinc-50">Adapta </span>
             <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 bg-clip-text text-transparent">tu CV</span>
           </h2>

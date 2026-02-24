@@ -76,33 +76,44 @@ const CVAdapter = () => {
           </div>
 
           {result?.success && (
-            <div className="border rounded-xl p-4 bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-emerald-500/10 border-emerald-500/40">
-              <p className="font-medium text-lg mb-2">
-                <span className="text-emerald-400">
-                  ✓ CV adaptado a la oferta
-                </span>
-              </p>
-              <p className="text-sm text-zinc-400 mb-3">{result.detail}</p>
-              {result.data?.download_url && (
-                <a
-                  href={result.data.download_url}
-                  download
-                  className="inline-flex items-center gap-2 font-medium text-emerald-400 hover:text-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-zinc-900 rounded-lg transition-colors"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            <div
+              role="status"
+              aria-live="polite"
+              className="rounded-xl p-5 md:p-6 bg-gradient-to-r from-emerald-500/15 via-teal-500/10 to-emerald-500/15 border border-emerald-500/40 shadow-lg shadow-emerald-500/5"
+            >
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center shrink-0 ring-1 ring-emerald-500/30">
+                  <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  Descargar CV adaptado
-                </a>
-              )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="font-display font-semibold text-lg text-emerald-100">
+                    CV adaptado a la oferta
+                  </p>
+                  <p className="text-sm text-zinc-400 mt-1">{result.detail}</p>
+                  {result.data?.download_url && (
+                    <a
+                      href={result.data.download_url}
+                      download
+                      className="mt-4 inline-flex items-center gap-2 font-semibold text-emerald-400 hover:text-emerald-300 py-2.5 px-4 rounded-lg bg-emerald-500/15 border border-emerald-500/40 hover:bg-emerald-500/25 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-zinc-900 transition-colors"
+                    >
+                      <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Descargar CV adaptado
+                    </a>
+                  )}
+                </div>
+              </div>
             </div>
           )}
 
-          <div className="flex gap-4 pt-2">
+          <div className="flex flex-wrap gap-3 pt-2">
             <button
               type="submit"
               disabled={!file || loading}
-              className="flex-1 font-display bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 text-zinc-50 py-3 px-6 rounded-xl font-semibold hover:from-emerald-500 hover:via-teal-500 hover:to-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-emerald-500 disabled:from-zinc-600 disabled:via-zinc-600 disabled:to-zinc-600 disabled:cursor-not-allowed transition-all duration-300"
+              className="flex-1 min-w-[140px] font-display bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 text-zinc-50 py-3 px-6 rounded-xl font-semibold hover:from-emerald-500 hover:via-teal-500 hover:to-emerald-500 active:from-emerald-700 active:via-teal-700 active:to-emerald-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 focus-visible:ring-emerald-500 disabled:from-zinc-600 disabled:via-zinc-600 disabled:to-zinc-600 disabled:cursor-not-allowed disabled:opacity-70 transition-all duration-200"
             >
               {loading ? (
                 <span className="flex items-center justify-center">
@@ -137,7 +148,7 @@ const CVAdapter = () => {
                 type="button"
                 onClick={handleReset}
                 disabled={loading}
-                className="px-6 py-3 border border-zinc-600 rounded-xl font-medium text-zinc-300 hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-emerald-500 disabled:bg-zinc-800 disabled:cursor-not-allowed transition-colors"
+                className="px-6 py-3 border border-zinc-600 rounded-xl font-medium text-zinc-300 hover:bg-zinc-800 hover:border-zinc-500 active:bg-zinc-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-200"
               >
                 Limpiar
               </button>

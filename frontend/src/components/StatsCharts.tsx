@@ -58,64 +58,20 @@ const StatsCharts = () => {
           Datos de usuarios que adaptaron su CV con nuestra herramienta (muestra representativa).
         </p>
 
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-12">
-          {/* Izquierda: mejora después de usar CV Adapter */}
-          <div className="relative rounded-2xl p-[1px] bg-gradient-to-br from-emerald-500/30 via-teal-500/20 to-emerald-500/30">
-            <div className="rounded-2xl bg-zinc-800/50 p-6 h-full">
-              <h3 className="font-display text-lg font-bold text-zinc-50 mb-1">
-                Después de CV Adapter
-              </h3>
-              <p className="text-sm text-zinc-500 mb-6">
-                Métricas de mejora tras adaptar el CV con la herramienta
-              </p>
-              <div className="h-[280px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RadarChart data={radarDespuesData} margin={{ top: 16, right: 24, left: 24, bottom: 16 }}>
-                    <PolarGrid stroke="#3f3f46" />
-                    <PolarAngleAxis
-                      dataKey="subject"
-                      tick={{ fill: '#a1a1aa', fontSize: 11 }}
-                    />
-                    <PolarRadiusAxis
-                      angle={90}
-                      domain={[0, 100]}
-                      tick={{ fill: '#71717a', fontSize: 10 }}
-                    />
-                    <Radar
-                      name="Después"
-                      dataKey="value"
-                      stroke="#10b981"
-                      fill="#10b981"
-                      fillOpacity={0.4}
-                      strokeWidth={2}
-                    />
-                    <Tooltip
-                      contentStyle={customTooltipStyle}
-                      formatter={(value: number) => [value, '']}
-                      labelFormatter={(label) => label}
-                    />
-                  </RadarChart>
-                </ResponsiveContainer>
-              </div>
-              <p className="text-xs text-emerald-400/90 mt-3 font-medium">
-                Mejora notable en tasa de respuesta, rapidez y match con ofertas
-              </p>
-            </div>
-          </div>
-
-          {/* Derecha: métricas antes de usar CV Adapter */}
-          <div className="relative rounded-2xl p-[1px] bg-gradient-to-br from-emerald-500/30 via-teal-500/20 to-emerald-500/30">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+          {/* Izquierda: Antes (lectura natural primero) */}
+          <div className="relative rounded-2xl p-[1px] bg-gradient-to-br from-zinc-600/40 via-zinc-600/30 to-zinc-600/40">
             <div className="rounded-2xl bg-zinc-800/50 p-6 h-full">
               <h3 className="font-display text-lg font-bold text-zinc-50 mb-1">
                 Antes de CV Adapter
               </h3>
-              <p className="text-sm text-zinc-500 mb-6">
+              <p className="text-sm text-zinc-500 mb-4">
                 Métricas típicas sin adaptar el CV a la oferta
               </p>
-              <div className="h-[280px]">
+              <div className="h-[260px] sm:h-[280px]" role="img" aria-label="Gráfico radar: métricas antes de usar la herramienta">
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart data={radarAntesData} margin={{ top: 16, right: 24, left: 24, bottom: 16 }}>
-                    <PolarGrid stroke="#3f3f46" />
+                    <PolarGrid stroke="rgba(63, 63, 70, 0.8)" />
                     <PolarAngleAxis
                       dataKey="subject"
                       tick={{ fill: '#a1a1aa', fontSize: 11 }}
@@ -135,7 +91,7 @@ const StatsCharts = () => {
                     />
                     <Tooltip
                       contentStyle={customTooltipStyle}
-                      formatter={(value: number) => [value, '']}
+                      formatter={(value: number) => [`${value}%`, '']}
                       labelFormatter={(label) => label}
                     />
                   </RadarChart>
@@ -146,6 +102,59 @@ const StatsCharts = () => {
               </p>
             </div>
           </div>
+
+          {/* Derecha: Después (mejora) */}
+          <div className="relative rounded-2xl p-[1px] bg-gradient-to-br from-emerald-500/30 via-teal-500/20 to-emerald-500/30">
+            <div className="rounded-2xl bg-zinc-800/50 p-6 h-full">
+              <h3 className="font-display text-lg font-bold text-zinc-50 mb-1">
+                Después de CV Adapter
+              </h3>
+              <p className="text-sm text-zinc-500 mb-4">
+                Métricas de mejora tras adaptar el CV con la herramienta
+              </p>
+              <div className="h-[260px] sm:h-[280px]" role="img" aria-label="Gráfico radar: métricas después de usar la herramienta">
+                <ResponsiveContainer width="100%" height="100%">
+                  <RadarChart data={radarDespuesData} margin={{ top: 16, right: 24, left: 24, bottom: 16 }}>
+                    <PolarGrid stroke="rgba(63, 63, 70, 0.8)" />
+                    <PolarAngleAxis
+                      dataKey="subject"
+                      tick={{ fill: '#a1a1aa', fontSize: 11 }}
+                    />
+                    <PolarRadiusAxis
+                      angle={90}
+                      domain={[0, 100]}
+                      tick={{ fill: '#71717a', fontSize: 10 }}
+                    />
+                    <Radar
+                      name="Después"
+                      dataKey="value"
+                      stroke="#10b981"
+                      fill="#10b981"
+                      fillOpacity={0.4}
+                      strokeWidth={2}
+                    />
+                    <Tooltip
+                      contentStyle={customTooltipStyle}
+                      formatter={(value: number) => [`${value}%`, '']}
+                      labelFormatter={(label) => label}
+                    />
+                  </RadarChart>
+                </ResponsiveContainer>
+              </div>
+              <p className="text-xs text-emerald-400/90 mt-3 font-medium">
+                Mejora notable en tasa de respuesta, rapidez y match con ofertas
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-6 mt-6" aria-hidden>
+          <span className="inline-flex items-center gap-2 text-sm text-zinc-500">
+            <span className="w-3 h-3 rounded-full bg-zinc-500" /> Antes
+          </span>
+          <span className="inline-flex items-center gap-2 text-sm text-zinc-500">
+            <span className="w-3 h-3 rounded-full bg-emerald-500" /> Después
+          </span>
         </div>
 
         <p className="text-center text-xs text-zinc-600 mt-8 max-w-2xl mx-auto">
