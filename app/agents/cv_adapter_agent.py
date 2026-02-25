@@ -1,4 +1,5 @@
 from langchain.agents import create_agent
+from langchain.agents.structured_output import ToolStrategy
 from langchain.messages import SystemMessage
 from langchain.tools import tool
 from langchain_core.messages import HumanMessage
@@ -10,6 +11,7 @@ from app.models.config import settings
 from app.agents.cv_reader import cv_reader_agent
 from app.agents.outputs.cv_reader_output import CVReaderOutput
 from app.agents.outputs.cv_validator_output import CVValidatorOutput
+from langchain.agents.structured_output import ToolStrategy
 
 
 @tool
@@ -82,6 +84,6 @@ Create a dedicated "Technical Skills" section that mirrors the JD’s terminolog
 
     base_prompt = SystemMessage(prompt.format())
     cv_adapter_agent = create_agent(
-        model=ChatOpenAI(model="gpt-5-nano", temperature=1), system_prompt=base_prompt, response_format=CVReaderOutput,
+        model=ChatOpenAI(model="gpt-5-nano", temperature=1), system_prompt=base_prompt, response_format=ToolStrategy(schema=CVValidatorOutput),
     )
     return cv_adapter_agent
