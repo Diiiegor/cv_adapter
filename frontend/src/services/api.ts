@@ -8,12 +8,13 @@ export interface AdaptCVResponse {
     download_url?: string
     message?: string
     adapted_cv?: unknown
+    pdf_base64?: string
   }
 }
 
 export type AdaptStreamEvent =
   | { event: 'progress'; data: { step: number; message: string; is_cv?: boolean } }
-  | { event: 'done'; data: { success: true; step: number; message: string; adapted_cv?: unknown } }
+  | { event: 'done'; data: { success: true; step: number; message: string; adapted_cv?: unknown; pdf_base64?: string } }
   | { event: 'error'; data: { success: false; message: string } }
 
 function fileToBase64(file: File): Promise<string> {
@@ -90,6 +91,7 @@ export const adaptCVStream = async (
             data: {
               message: (data.message as string) ?? undefined,
               adapted_cv: data.adapted_cv,
+              pdf_base64: (data.pdf_base64 as string) ?? undefined,
               ...(typeof data.adapted_cv === 'object' && data.adapted_cv !== null
                 ? (data.adapted_cv as Record<string, unknown>)
                 : {}),

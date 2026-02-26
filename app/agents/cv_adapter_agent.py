@@ -84,6 +84,6 @@ Create a dedicated "Technical Skills" section that mirrors the JD’s terminolog
 
     base_prompt = SystemMessage(prompt.format())
     cv_adapter_agent = create_agent(
-        model=ChatOpenAI(model="gpt-5-nano", temperature=1), system_prompt=base_prompt, response_format=ToolStrategy(schema=CVValidatorOutput),
+        model=ChatOpenAI(model="gpt-4.1-mini", temperature=1), system_prompt=base_prompt, response_format=ToolStrategy(schema=CVReaderOutput),
     )
     return cv_adapter_agent

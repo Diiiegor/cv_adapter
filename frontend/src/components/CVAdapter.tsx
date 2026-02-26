@@ -1,7 +1,8 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { adaptCVStream, type AdaptCVResponse } from '../services/api'
 import CVUpload from './CVUpload'
 import JobDescription from './JobDescription'
+import PdfPreview from './PdfPreview'
 
 const STEPS: { step: number; label: string }[] = [
   { step: 1, label: 'Validando tamaño del archivo' },
@@ -9,7 +10,8 @@ const STEPS: { step: number; label: string }[] = [
   { step: 3, label: 'Validando que sea un CV' },
   { step: 4, label: 'CV validado' },
   { step: 5, label: 'Adaptando CV a la oferta' },
-  { step: 6, label: 'CV adaptado' },
+  { step: 6, label: 'Generando PDF' },
+  { step: 7, label: 'PDF generado' },
 ]
 
 const CVAdapter = () => {
@@ -20,7 +22,14 @@ const CVAdapter = () => {
   const [error, setError] = useState<string | null>(null)
   const [progressStep, setProgressStep] = useState<number>(0)
   const [progressMessage, setProgressMessage] = useState<string>('')
+  const [pdfBlobUrl, setPdfBlobUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    return () => {
+      if (pdfBlobUrl) URL.revokeObjectURL(pdfBlobUrl)
+    }
+  }, [pdfBlobUrl])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -35,6 +44,10 @@ const CVAdapter = () => {
     setResult(null)
     setProgressStep(0)
     setProgressMessage('')
+    if (pdfBlobUrl) {
+      URL.revokeObjectURL(pdfBlobUrl)
+      setPdfBlobUrl(null)
+    }
 
     try {
       const response = await adaptCVStream(
@@ -51,6 +64,15 @@ const CVAdapter = () => {
         }
       )
       setResult(response)
+      if (response.data?.pdf_base64) {
+        const byteChars = atob(response.data.pdf_base64)
+        const byteArray = new Uint8Array(byteChars.length)
+        for (let i = 0; i < byteChars.length; i++) {
+          byteArray[i] = byteChars.charCodeAt(i)
+        }
+        const blob = new Blob([byteArray], { type: 'application/pdf' })
+        setPdfBlobUrl(URL.createObjectURL(blob))
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al adaptar el CV')
     } finally {
@@ -65,6 +87,10 @@ const CVAdapter = () => {
     setJobDescription('')
     setResult(null)
     setError(null)
+    if (pdfBlobUrl) {
+      URL.revokeObjectURL(pdfBlobUrl)
+      setPdfBlobUrl(null)
+    }
     if (fileInputRef.current) {
       fileInputRef.current.value = ''
     }
@@ -111,8 +137,8 @@ const CVAdapter = () => {
               <p className="font-display font-semibold text-zinc-200 mb-4">Progreso</p>
               <ul className="space-y-3">
                 {STEPS.map(({ step, label }) => {
-                  const completed = progressStep > step || (progressStep === step && step === 6)
-                  const current = progressStep === step && step !== 6
+                  const completed = progressStep > step || (progressStep === step && step === 7)
+                  const current = progressStep === step && step !== 7
                   return (
                     <li
                       key={step}
@@ -180,20 +206,13 @@ const CVAdapter = () => {
                     CV adaptado a la oferta
                   </p>
                   <p className="text-sm text-zinc-400 mt-1">{result.detail}</p>
-                  {result.data?.download_url && (
-                    <a
-                      href={result.data.download_url}
-                      download
-                      className="mt-4 inline-flex items-center gap-2 font-semibold text-emerald-400 hover:text-emerald-300 py-2.5 px-4 rounded-lg bg-emerald-500/15 border border-emerald-500/40 hover:bg-emerald-500/25 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-zinc-900 transition-colors"
-                    >
-                      <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                      </svg>
-                      Descargar CV adaptado
-                    </a>
-                  )}
                 </div>
               </div>
+              {pdfBlobUrl && (
+                <div className="mt-4">
+                  <PdfPreview blobUrl={pdfBlobUrl} />
+                </div>
+              )}
             </div>
           )}
 
